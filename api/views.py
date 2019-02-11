@@ -31,21 +31,29 @@ from api.filters import (
 
 # Create your views here.
 
-class PostViewList(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
+class PostViewList(generics.ListAPIView):
+    model = Post
+    permission_classes = (AllowAny,)
     serializer_class = PostSerialiazers
     filter_backends = (DjangoFilterBackend,)
     filter_class = PostFilter
+
+    def get_queryset(self):
+        return Post.objects.all()
 
 class PostViewDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerialiazers
 
 class AdmitCardsViewList(generics.ListCreateAPIView):
-    queryset = AdmitCards.objects.all()
+    model = AdmitCards
+    permission_classes = (AllowAny,)
     serializer_class = AdmitCardsSerialiazers
     filter_backends = (DjangoFilterBackend,)
     filter_class = AdmitCardsFilter
+
+    def get_queryset(self):
+        return AdmitCards.objects.all()
 
 class EmailsViewList(generics.ListCreateAPIView):
     queryset = Emails.objects.all()
@@ -56,10 +64,13 @@ class AdmitCardsViewDetails(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AdmitCardsSerialiazers
 
 class ResultViewList(generics.ListCreateAPIView):
-    queryset = Result.objects.all()
+    model = Result
+    permission_classes = (AllowAny,)
     serializer_class = ResultSerialiazers
     filter_backends = (DjangoFilterBackend,)
     filter_class = ResultFilter
+    def get_queryset(self):
+        return Result.objects.all()
 
 class ResultViewDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Result.objects.all()
