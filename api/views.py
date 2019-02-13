@@ -42,6 +42,7 @@ class PostViewList(generics.ListAPIView):
         return Post.objects.all()
 
 class PostViewDetails(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (AllowAny,)
     queryset = Post.objects.all()
     serializer_class = PostSerialiazers
 
@@ -56,10 +57,12 @@ class AdmitCardsViewList(generics.ListCreateAPIView):
         return AdmitCards.objects.all()
 
 class EmailsViewList(generics.ListCreateAPIView):
+    permission_classes = (AllowAny,)
     queryset = Emails.objects.all()
     serializer_class = EmailsSerialiazers
 
 class AdmitCardsViewDetails(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (AllowAny,)
     queryset = AdmitCards.objects.all()
     serializer_class = AdmitCardsSerialiazers
 
@@ -73,10 +76,12 @@ class ResultViewList(generics.ListCreateAPIView):
         return Result.objects.all()
 
 class ResultViewDetails(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (AllowAny,)
     queryset = Result.objects.all()
     serializer_class = ResultSerialiazers
 
 class TestViewList(generics.ListCreateAPIView):
+    permission_classes = (AllowAny,)
     queryset = Test.objects.all()
     serializer_class = TestSerialiazers
 
@@ -136,6 +141,7 @@ class AptitudeTestViewList(generics.ListAPIView):
     
 
 class AptitudeTestViewDetails(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (AllowAny,)
     queryset = AptitudeTest.objects.all()
     serializer_class = AptitudeTestSerialiazers
 
@@ -150,11 +156,13 @@ class EnglishTestViewList(generics.ListAPIView):
     
 
 class EnglishTestViewDetails(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (AllowAny,)
     queryset = EnglishTest.objects.all()
     serializer_class = EnglishTestSerialiazers
 
     
 class ReasoningTestViewList(generics.ListAPIView):
+    permission_classes = (AllowAny,)
     model = ReasoningTest
     permission_classes = (AllowAny,)
     serializer_class = ReasoningTestSerialiazers
@@ -164,10 +172,12 @@ class ReasoningTestViewList(generics.ListAPIView):
     
 
 class ReasoningTestViewDetails(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (AllowAny,)
     queryset = ReasoningTest.objects.all()
     serializer_class = ReasoningTestSerialiazers
 
 class BlogsViewList(generics.ListAPIView):
+    permission_classes = (AllowAny,)
     model = Blogs
     permission_classes = (AllowAny,)
     serializer_class = BlogsSerialiazers
@@ -197,6 +207,7 @@ class BlogsViewDetails(APIView):
 
 
 class UserBlogsList(generics.ListAPIView):
+    permission_classes = (AllowAny,)
     model = UserBlog
     permission_classes = (IsAuthenticated,)
     serializer_class = UserBlogSerializers
