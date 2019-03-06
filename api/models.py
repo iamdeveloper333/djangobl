@@ -105,6 +105,21 @@ class UserBlog(models.Model):
     def __str__(self):
         return str(self.id)
 
+
+class SaveUserBlog(models.Model):
+    profile = models.ForeignKey(User, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blogs, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
+class SaveUserJob(models.Model):
+    profile = models.ForeignKey(User, on_delete=models.CASCADE)
+    job = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
+
 class AptitudeTest(models.Model):
     category_title =  models.CharField(max_length=400,default=None,null=True)
     category_description =  models.TextField(default=None,null=True)

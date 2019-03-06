@@ -1,0 +1,29 @@
+
+class BlogsViewDetails(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, pk):
+        blog_data = {}
+        blog_data['blog'] = pk
+        blog_data['profile'] = request.user.id
+        try:
+            UserBlog.objects.get(blog=pk)
+            return Response({
+                'message': 'Already Exist'
+            }, status=status.HTTP_403_FORBIDDEN)
+        except:
+            userblog_serialiazer = UserBlogSerializers(data=blog_data)
+            if userblog_serialiazer.is_valid():
+                userblog_serialiazer.save()
+        return Response({'data': userblog_serialiazer.data}, status=status.HTTP_200_OK)
+
+
+
+class UserBlogsList(generics.ListAPIView):
+    model = UserBlog
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserBlogSerializers
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserBlog.objects.filter(profile=user)

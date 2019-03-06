@@ -6,7 +6,7 @@ from .models import Eligibility
 from .models import AgeLimit
 from .models import VacancyDetail
 from .models import AdmitCards
-from .models import Result
+from .models import Result,SaveUserBlog,SaveUserJob
 from .models import Emails,Question,Test,AptitudeTest,Blogs, UserBlog,RQuestion,ReasoningTest,RTest,EnglishTest,ETest,EQuestion
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
@@ -461,3 +461,25 @@ class UserBlogSerializers(serializers.ModelSerializer):
     class Meta:
         model = UserBlog
         fields = ('id', 'profile', 'blog')
+
+# class UserSaveJobSerializers(serializers.ModelSerializer):
+#     profile = serializers.SlugRelatedField(slug_field='id', queryset=User.objects.all())
+#     job = serializers.SlugRelatedField(slug_field='id', queryset=Blogs.objects.all())
+
+#     class Meta:
+#         model = UserBlog
+#         fields = ('id', 'profile', 'job')
+
+
+
+class SaveUserBlogSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = SaveUserBlog
+        fields = ('id', 'profile', 'blog')
+
+
+class SaveUserJobSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = SaveUserJob
+        fields = ('id', 'profile', 'job')
+

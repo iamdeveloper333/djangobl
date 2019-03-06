@@ -1,13 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import HttpResponse,Http404
-from api.models import Post,AdmitCards,Result,Emails,Test,AptitudeTest,Blogs, UserBlog,ReasoningTest,EnglishTest
+from api.models import SaveUserJob,SaveUserBlog,Post,AdmitCards,Result,Emails,Test,AptitudeTest,Blogs, UserBlog,ReasoningTest,EnglishTest
 from api.serializers import PostSerialiazers
 from api.serializers import AdmitCardsSerialiazers
 from api.serializers import ResultSerialiazers
 from api.serializers import EmailsSerialiazers
 from api.serializers import TestSerialiazers
 from api.serializers import AptitudeTestSerialiazers,EnglishTestSerialiazers,ReasoningTestSerialiazers
-from api.serializers import BlogsSerialiazers, UserBlogSerializers
+# ,UserSaveJobSerializers
+from api.serializers import BlogsSerialiazers, UserBlogSerializers,SaveUserBlogSerializers,SaveUserJobSerializers
 
 # from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -112,25 +113,7 @@ class TestViewList(generics.ListCreateAPIView):
 
 
 
-# @api_view(['GET'])
-# def current_user(request):
    
-    
-#     serializer = UserSerializer(request.user)
-#     return Response(serializer.data)
-
-
-# class UserList(APIView):
-    
-#     permission_classes = (permissions.AllowAny,)
-
-#     def post(self, request, format=None):
-#         serializer = UserSerializerWithToken(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 class AptitudeTestViewList(generics.ListAPIView):
     model = AptitudeTest
     permission_classes = (AllowAny,)
@@ -162,7 +145,6 @@ class EnglishTestViewDetails(generics.RetrieveUpdateDestroyAPIView):
 
     
 class ReasoningTestViewList(generics.ListAPIView):
-    permission_classes = (AllowAny,)
     model = ReasoningTest
     permission_classes = (AllowAny,)
     serializer_class = ReasoningTestSerialiazers
@@ -177,14 +159,33 @@ class ReasoningTestViewDetails(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ReasoningTestSerialiazers
 
 class BlogsViewList(generics.ListAPIView):
-    permission_classes = (AllowAny,)
     model = Blogs
     permission_classes = (AllowAny,)
     serializer_class = BlogsSerialiazers
 
     def get_queryset(self):
         return Blogs.objects.all()
-    
+
+
+class SaveJobsViewDetails(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, pk):
+        job_data = {}
+        job_data['job'] = pk
+        job_data['profile'] = request.user.id
+        try:
+            SaveUserJob.objects.filter(profile=request.user.id).get(job=pk)
+            return Response({
+                'message': 'Already Exist'
+            }, status=status.HTTP_403_FORBIDDEN)
+        except:        
+            serializer = SaveUserJobSerializers(data=job_data)
+            if serializer.is_valid():
+                serializer.save() 
+                print(SaveUserJob.objects.all())
+                return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogsViewDetails(APIView):
     permission_classes = (IsAuthenticated,)
@@ -194,20 +195,21 @@ class BlogsViewDetails(APIView):
         blog_data['blog'] = pk
         blog_data['profile'] = request.user.id
         try:
-            UserBlog.objects.get(blog=pk)
+            SaveUserBlog.objects.filter(profile=request.user.id).get(blog=pk)
             return Response({
                 'message': 'Already Exist'
             }, status=status.HTTP_403_FORBIDDEN)
-        except:
-            userblog_serialiazer = UserBlogSerializers(data=blog_data)
-            if userblog_serialiazer.is_valid():
-                userblog_serialiazer.save()
-        return Response({'data': userblog_serialiazer.data}, status=status.HTTP_200_OK)
+        except:        
+            serializer = SaveUserBlogSerializers(data=blog_data)
+            if serializer.is_valid():
+                serializer.save() 
+                return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
 class UserBlogsList(generics.ListAPIView):
-    permission_classes = (AllowAny,)
     model = UserBlog
     permission_classes = (IsAuthenticated,)
     serializer_class = UserBlogSerializers
@@ -215,3 +217,57 @@ class UserBlogsList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return UserBlog.objects.filter(profile=user)
+
+
+class SaveBlogList(generics.ListAPIView):
+    model = SaveUserBlog
+    permission_classes = (IsAuthenticated,)
+    serializer_class = SaveUserBlogSerializers
+
+    def get_queryset(self):
+        user = self.request.user
+        return SaveUserBlog.objects.filter(profile=user)
+
+class SaveJobList(generics.ListAPIView):
+    model = SaveUserJob
+    permission_classes = (IsAuthenticated,)
+    serializer_class = SaveUserJobSerializers
+
+    def get_queryset(self):
+        user = self.request.user
+        return SaveUserJob.objects.filter(profile=user)
+
+
+
+# class SaveJobViewDetails(APIView):
+#     permission_classes = (IsAuthenticated,)    
+#     def put(self, request, pk):
+       
+#         job_data = {}
+#         job_data['job'] = pk        
+#         job_data['profile'] = request.user.id
+#         print('job_data',job_data['job'] ,job_data['profile'] )
+#         try:
+#             UserSaveJob.objects.get(job=pk)
+            
+#             return Response({
+#                 'message': 'Already Exist'
+#             }, status=status.HTTP_403_FORBIDDEN)
+#         except:
+#             print('inside user1')
+#             userjob_serialiazer = UserSaveJobSerializers(data=job_data)
+#             if userjob_serialiazer.is_valid():
+#                 userjob_serialiazer.save()
+#         return Response({'data': userjob_serialiazer.data}, status=status.HTTP_200_OK)
+
+
+
+
+# class UserSaveJobList(generics.ListAPIView):
+#     model = UserSaveJob
+#     permission_classes = (IsAuthenticated,)
+#     serializer_class = UserSaveJobSerializers
+
+#     def get_queryset(self):
+#         user = self.request.user
+#         return UserSaveJob.objects.filter(profile=user)

@@ -19,7 +19,10 @@ urlpatterns = [
      path('ResultApi/<int:pk>', views.ResultViewDetails.as_view()),
      path('BlogsApi/', views.BlogsViewList.as_view()),
      path('UserBlogsApi/', views.UserBlogsList.as_view()),
+     path('SaveBlogsApi/', views.SaveBlogList.as_view()),
      path('BlogsApi/<int:pk>', views.BlogsViewDetails.as_view()),
+     path('SaveJobApi/<int:pk>', views.SaveJobsViewDetails.as_view()),
+     path('SaveJobsListApi/', views.SaveJobList.as_view()),
      # path('current_user/', views.current_user),
      # path('users/', views.UserList.as_view()),
 ]
