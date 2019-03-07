@@ -32,7 +32,7 @@ from api.filters import (
 
 # Create your views here.
 
-class PostViewList(generics.ListAPIView):
+class PostViewList(generics.ListCreateAPIView):
     model = Post
     permission_classes = (AllowAny,)
     serializer_class = PostSerialiazers
