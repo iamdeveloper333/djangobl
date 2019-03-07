@@ -34,7 +34,7 @@ from api.filters import (
 
 class PostViewList(generics.ListCreateAPIView):
     model = Post
-    permission_classes = (AllowAny,)
+    # permission_classes = (AllowAny,)
     serializer_class = PostSerialiazers
     filter_backends = (DjangoFilterBackend,)
     filter_class = PostFilter
