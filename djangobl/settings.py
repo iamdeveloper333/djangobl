@@ -24,9 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'j6ufoi(jwkb@4of9v#dj88kwt!6t2r_=lh_a8!yo434c-f0o1l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['139.59.62.182','127.0.0.1']
+ALLOWED_HOSTS = ['206.189.129.229']
+
 
 
 # Application definition
@@ -168,8 +169,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -191,3 +190,9 @@ AUTHENTICATION_BACKENDS = (
 )
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # ACCOUNT_USERNAME_REQUIRED = False
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
+         
